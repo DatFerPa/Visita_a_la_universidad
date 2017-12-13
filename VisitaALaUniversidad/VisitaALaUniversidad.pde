@@ -5,9 +5,6 @@ import org.openkinect.processing.*;
 KinectTracker tracker;
 Kinect kinect;
 
-Long inicio;
-Long finalizado;
-
 boolean appIniciada;
 
 
@@ -49,14 +46,6 @@ void draw(){
   textSize(50);
   ellipse(v1.x, v1.y, 20, 20);
   fill(0,255,0);
-  if(v1.x < width*0.1){
-    text("izquierda",50,50);
-    texto = IZQUIERDA;
-    
-  }else if(v1.x > width*0.9){
-    text("derecha",50,50);
-    texto = DERECHA;
-  }
   // Let's draw the "lerped" location
   //PVector v2 = tracker.getLerpedPos();
   //fill(100, 250, 50, 200);
@@ -74,13 +63,23 @@ void draw(){
   
       if(!tweetAcabado){         
        tweetAcabado = tweter.videoAcabado();
-        inicio = System.currentTimeMillis();
       }else{
-        finalizado = System.currentTimeMillis();
-        if(finalizado - inicio >= 6000 && !texto.equals("")){
-          tweetAcabado = false;    
-          tweter.tweet(texto);
-          texto = "";
+        if(texto.equals("")){
+          if(v1.x < width*0.1){
+            text("izquierda",50,50);
+            texto = IZQUIERDA;
+            tweetAcabado = false;    
+            tweter.tweet(texto);
+            texto = "";
+    
+          }else if(v1.x > width*0.9){
+            text("derecha",50,50);
+            texto = DERECHA;
+            tweetAcabado = false;    
+            tweter.tweet(texto);
+            texto = "";
+          }  
+          
         }
            
       }
