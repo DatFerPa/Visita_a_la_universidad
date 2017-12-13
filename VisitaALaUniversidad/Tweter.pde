@@ -32,6 +32,11 @@ String getEstado(){
 }
 
 boolean videoAcabado(){
+  try{
+  Thread.sleep(3000);
+  }catch(InterruptedException e){
+    System.err.println("Fallo a la hora de hacer un sleep");
+  }
   String texto = getEstado();
   return (texto.contains("MENSAJE_ACABADO"))?true:false;
 }

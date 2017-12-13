@@ -8,6 +8,10 @@ Kinect kinect;
 Long inicio;
 Long finalizado;
 
+boolean appIniciada;
+
+
+
 static final String DERECHA = "DERECHA";
 static final String IZQUIERDA = "IZQUIERDA";
 
@@ -19,15 +23,15 @@ Tweter tweter;
 
 
 void setup() {
+  appIniciada = false;
   size(640, 520);
   kinect = new Kinect(this);
   tracker = new KinectTracker();
   tweetAcabado = false;
   tweter = new Tweter();
-  tweter.tweet("Aplicacion processing acaba de empezar");
 }
 
-void draw() {
+void draw(){
   background(255);
 
   // Run the tracking analysis
@@ -44,6 +48,7 @@ void draw() {
   noStroke();
   textSize(50);
   ellipse(v1.x, v1.y, 20, 20);
+  fill(0,255,0);
   if(v1.x < width*0.1){
     text("izquierda",50,50);
     texto = IZQUIERDA;
@@ -62,21 +67,27 @@ void draw() {
   int t = tracker.getThreshold();
   fill(0);
   textSize(32);
-  text("deteccion: " + t + "    " +  "frames " + int(frameRate) , 20, 500);
+  text("deteccion: " + t + "    " +  "frames " + int(frameRate) , 100, 510);
+  fill(255, 0, 0);
+   text("Iniciado: " +appIniciada , 400, 50);
+  if(appIniciada){
   
-  if(!tweetAcabado){
-   tweetAcabado = tweter.videoAcabado();
-    inicio = System.currentTimeMillis();
+      if(!tweetAcabado){         
+       tweetAcabado = tweter.videoAcabado();
+        inicio = System.currentTimeMillis();
+      }else{
+        finalizado = System.currentTimeMillis();
+        if(finalizado - inicio >= 6000 && !texto.equals("")){
+          tweetAcabado = false;    
+          tweter.tweet(texto);
+          texto = "";
+        }
+           
+      }
   }else{
-    finalizado = System.currentTimeMillis();
-    if(finalizado - inicio >= 3000 && !texto.equals("")){
-      tweetAcabado = false;    
-      tweter.tweet(texto);
-    }
-       
+    tweetAcabado =false;
+    texto = "";
   }
-  
-  
     
 }
 
@@ -90,6 +101,14 @@ void keyPressed() {
     } else if (keyCode == DOWN) {
       t-=5;
       tracker.setThreshold(t);
+    }else if (keyCode == LEFT){
+      if(!appIniciada){
+        appIniciada = true;
+        tweter.tweet("Aplicacion processing acaba de empezar");
+      }else{
+        appIniciada = false;
+        tweter.tweet("Aplicacion processing se ha finalizado con un comando");
+      }
     }
   }
 }
