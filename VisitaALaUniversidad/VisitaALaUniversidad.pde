@@ -69,8 +69,8 @@ void draw() {
     inicio = System.currentTimeMillis();
   }else{
     finalizado = System.currentTimeMillis();
-    if(finalizado - inicio >= 3000){
-      tweetAcabado = false;
+    if(finalizado - inicio >= 3000 && !texto.equals("")){
+      tweetAcabado = false;    
       tweter.tweet(texto);
     }
        
