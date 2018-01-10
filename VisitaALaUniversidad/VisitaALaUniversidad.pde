@@ -66,15 +66,15 @@ void draw(){
       }else{
         if(texto.equals("")){
           if(v1.x < width*0.1){
-            text("izquierda",50,50);
-            texto = IZQUIERDA;
+            text("derecha",50,50);
+            texto = DERECHA;
             tweetAcabado = false;    
             tweter.tweet(texto);
             texto = "";
     
           }else if(v1.x > width*0.9){
-            text("derecha",50,50);
-            texto = DERECHA;
+            text("izquierda",50,50);
+            texto = IZQUIERDA;
             tweetAcabado = false;    
             tweter.tweet(texto);
             texto = "";
